@@ -47,6 +47,7 @@ export default {
           DEFAULT: "hsl(var(--gold))",
           foreground: "hsl(var(--gold-foreground))",
           light: "hsl(var(--gold-light))",
+          dark: "hsl(var(--gold-dark))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -82,14 +83,24 @@ export default {
           to: { height: "0" },
         },
         "pulse-gold": {
-          "0%, 100%": { boxShadow: "0 0 0 0 hsl(40 70% 55% / 0.4)" },
-          "50%": { boxShadow: "0 0 0 12px hsl(40 70% 55% / 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 hsl(38 90% 50% / 0.4)" },
+          "50%": { boxShadow: "0 0 0 16px hsl(38 90% 50% / 0)" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-gold": "pulse-gold 2s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
       },
     },
   },

@@ -20,7 +20,6 @@ const CountUp = ({ end, suffix = "", duration = 2000 }: CountUpProps) => {
           const animate = (now: number) => {
             const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // easeOutQuart
             const eased = 1 - Math.pow(1 - progress, 4);
             setCount(Math.floor(eased * end));
             if (progress < 1) requestAnimationFrame(animate);
@@ -35,7 +34,7 @@ const CountUp = ({ end, suffix = "", duration = 2000 }: CountUpProps) => {
   }, [end, duration]);
 
   return (
-    <span ref={ref} className="text-3xl md:text-4xl font-bold text-foreground tabular-nums">
+    <span ref={ref} className="text-4xl md:text-5xl font-bold text-foreground tabular-nums font-playfair">
       {count}{suffix}
     </span>
   );
