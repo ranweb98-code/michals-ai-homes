@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, ArrowLeft, ArrowRight, RotateCcw, MessageCircle } from "lucide-react";
+import { Sparkles, ArrowRight, RotateCcw, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { properties, Property, formatPrice, generateWhatsAppLink } from "@/data/properties";
+import { Property, formatPrice, generateWhatsAppLink } from "@/data/properties";
+import { useProperties } from "@/hooks/useProperties";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface StepConfig {
   title: string;
@@ -74,9 +76,7 @@ function scoreProperty(
   selections: Record<string, string>
 ): number {
   let score = 0;
-  const maxScore = 100;
 
-  // Budget
   const budget = parseInt(selections.budget);
   if (budget === 3000001) {
     if (property.price >= 3000000) score += 25;
@@ -94,17 +94,14 @@ function scoreProperty(
     else score += 5;
   }
 
-  // Type
   if (property.type === selections.type) score += 25;
   else score += 5;
 
-  // Rooms
   const rooms = parseInt(selections.rooms);
   if (property.rooms === rooms) score += 20;
   else if (Math.abs(property.rooms - rooms) === 1) score += 12;
   else score += 3;
 
-  // Location
   if (selections.location === "הסביבה") {
     score += 15;
   } else if (property.location === selections.location) {
@@ -113,7 +110,6 @@ function scoreProperty(
     score += 5;
   }
 
-  // Priority
   switch (selections.priority) {
     case "cheap":
       score += property.price < 1500000 ? 10 : property.price < 2000000 ? 6 : 2;
@@ -132,10 +128,11 @@ function scoreProperty(
       break;
   }
 
-  return Math.min(Math.round(score), maxScore);
+  return Math.min(Math.round(score), 100);
 }
 
 const AIFinder = () => {
+  const { data: properties = [], isLoading } = useProperties();
   const [currentStep, setCurrentStep] = useState(0);
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
@@ -167,6 +164,15 @@ const AIFinder = () => {
 
   const progress = showResults ? 100 : ((currentStep) / steps.length) * 100;
 
+  if (isLoading) {
+    return (
+      <div className="pt-24 pb-16 min-h-screen container mx-auto px-4 max-w-2xl">
+        <Skeleton className="h-10 w-64 mx-auto mb-8" />
+        <Skeleton className="h-64 rounded-xl" />
+      </div>
+    );
+  }
+
   return (
     <div className="pt-20 md:pt-24 pb-16 min-h-screen">
       <div className="container mx-auto px-4 max-w-2xl">
@@ -181,7 +187,6 @@ const AIFinder = () => {
           <p className="text-muted-foreground">ענו על כמה שאלות ונמצא לכם את ההתאמה הטובה ביותר</p>
         </div>
 
-        {/* Progress */}
         <div className="mb-8">
           <div className="flex justify-between text-sm text-muted-foreground mb-2">
             <span>שלב {showResults ? steps.length : currentStep + 1} מתוך {steps.length}</span>

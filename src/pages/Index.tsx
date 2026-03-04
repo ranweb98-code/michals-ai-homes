@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import { Sparkles, ArrowLeft, Building, Users, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PropertyCard from "@/components/PropertyCard";
-import { properties } from "@/data/properties";
+import { useProperties } from "@/hooks/useProperties";
 import heroBg from "@/assets/hero-bg.jpg";
 import CountUp from "@/components/CountUp";
 import FadeIn from "@/components/FadeIn";
-
-const featured = properties.filter((p) => p.isNew || p.isHot).slice(0, 3);
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
+  const { data: properties = [], isLoading } = useProperties();
+  const featured = properties.filter((p) => p.isNew || p.isHot).slice(0, 3);
+
   return (
     <div>
       {/* Hero */}
@@ -78,13 +80,21 @@ const Index = () => {
               <p className="text-muted-foreground">מבחר הנכסים הפופולריים ביותר שלנו</p>
             </div>
           </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map((p, i) => (
-              <FadeIn key={p.id} delay={i * 150}>
-                <PropertyCard property={p} />
-              </FadeIn>
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-80 rounded-lg" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featured.map((p, i) => (
+                <FadeIn key={p.id} delay={i * 150}>
+                  <PropertyCard property={p} />
+                </FadeIn>
+              ))}
+            </div>
+          )}
           <FadeIn delay={200}>
             <div className="text-center mt-10">
               <Link to="/properties">
