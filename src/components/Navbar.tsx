@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Phone, Menu, X, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,10 +13,23 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navBg = isHome && !scrolled && !isOpen
+    ? "bg-transparent border-transparent"
+    : "bg-background/90 backdrop-blur-md border-border";
 
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+    <nav className={`fixed top-0 right-0 left-0 z-50 border-b transition-all duration-300 ${navBg}`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
