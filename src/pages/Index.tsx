@@ -48,7 +48,7 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/ai-finder">
-                <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 gap-2 text-base px-10 h-14 rounded-full backdrop-blur-sm">
+                <Button size="lg" className="bg-transparent border-2 border-white/40 text-white hover:bg-white/10 gap-2 text-base px-10 h-14 rounded-full backdrop-blur-sm">
                   <Sparkles className="h-5 w-5" />
                   מציאת נכס חכמה
                 </Button>
