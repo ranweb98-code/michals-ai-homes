@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Sparkles, ArrowLeft, ArrowRight, RotateCcw, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { properties, Property, formatPrice, generateWhatsAppLink } from "@/data/properties";
@@ -241,15 +242,17 @@ const AIFinder = () => {
                     </div>
                   )}
                   <div className="flex flex-col sm:flex-row">
-                    <img
-                      src={r.property.image}
-                      alt={r.property.name}
-                      className="w-full sm:w-48 h-40 object-cover"
-                      loading="lazy"
-                    />
+                    <Link to={`/properties/${r.property.id}`} className="block shrink-0">
+                      <img
+                        src={r.property.image}
+                        alt={r.property.name}
+                        className="w-full sm:w-48 h-40 object-cover hover:opacity-90 transition-opacity cursor-pointer"
+                        loading="lazy"
+                      />
+                    </Link>
                     <div className="p-4 flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-bold text-foreground">{r.property.name}</h3>
+                        <Link to={`/properties/${r.property.id}`} className="font-bold text-foreground hover:text-gold transition-colors">{r.property.name}</Link>
                         <span className="text-sm font-bold text-gold bg-gold/10 px-2 py-1 rounded">
                           {r.score}% התאמה
                         </span>
