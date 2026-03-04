@@ -75,11 +75,11 @@ function parseCSV(csv: string): Record<string, string>[] {
 
 function rowToProperty(row: Record<string, string>): Property {
   const images: string[] = [];
-  const mainImage = row["image_main"] || "";
+  const mainImage = convertGoogleDriveUrl(row["image_main"] || "");
   if (mainImage) images.push(mainImage);
   for (let i = 1; i <= 5; i++) {
     const img = row[`image_${i}`];
-    if (img) images.push(img);
+    if (img) images.push(convertGoogleDriveUrl(img));
   }
 
   const features: string[] = [];
