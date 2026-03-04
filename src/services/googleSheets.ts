@@ -3,6 +3,30 @@ import { Property } from "@/data/properties";
 const SHEET_CSV_URL =
   "https://docs.google.com/spreadsheets/d/1353uIis39F6gb8RBgWX3_so1UalasRTSWVzCfiYITyU/export?format=csv";
 
+function convertGoogleDriveUrl(url: string): string {
+  if (!url) return url;
+  
+  // Format: https://drive.google.com/file/d/FILE_ID/view...
+  const fileMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if (fileMatch) {
+    return `https://drive.google.com/uc?export=view&id=${fileMatch[1]}`;
+  }
+  
+  // Format: https://drive.google.com/open?id=FILE_ID
+  const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+  if (openMatch) {
+    return `https://drive.google.com/uc?export=view&id=${openMatch[1]}`;
+  }
+
+  // Format: https://drive.google.com/uc?id=FILE_ID (already direct, ensure export=view)
+  const ucMatch = url.match(/drive\.google\.com\/uc\?.*id=([^&]+)/);
+  if (ucMatch && !url.includes('export=view')) {
+    return `https://drive.google.com/uc?export=view&id=${ucMatch[1]}`;
+  }
+
+  return url;
+}
+
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
   let current = "";
