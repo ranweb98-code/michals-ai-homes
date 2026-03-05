@@ -136,6 +136,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <Testimonials />
+
       {/* CTA */}
       <section className="py-24 md:py-32 bg-foreground text-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }} />
