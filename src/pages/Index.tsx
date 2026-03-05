@@ -6,6 +6,7 @@ import { useProperties } from "@/hooks/useProperties";
 import heroBg from "@/assets/hero-bg.jpg";
 import CountUp from "@/components/CountUp";
 import FadeIn from "@/components/FadeIn";
+import Testimonials from "@/components/Testimonials";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
