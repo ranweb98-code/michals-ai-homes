@@ -108,11 +108,19 @@ function rowToProperty(row: Record<string, string>): Property {
 }
 
 export async function fetchPropertiesFromSheet(): Promise<Property[]> {
-  const response = await fetch(SHEET_CSV_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch sheet: ${response.status}`);
+  try {
+    const response = await fetch(SHEET_CSV_URL);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch sheet: ${response.status}`);
+    }
+    const csv = await response.text();
+    const rows = parseCSV(csv);
+    const sheetProperties = rows.map(rowToProperty).filter((p) => p.name);
+    if (sheetProperties.length > 0) return sheetProperties;
+  } catch (e) {
+    console.warn("Could not fetch from Google Sheets, using demo data", e);
   }
-  const csv = await response.text();
-  const rows = parseCSV(csv);
-  return rows.map(rowToProperty).filter((p) => p.name);
+
+  const { demoProperties } = await import("@/data/demoProperties");
+  return demoProperties;
 }
